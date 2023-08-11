@@ -1,0 +1,30 @@
+name: stylegan3
+channels:
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.9
+  - pip
+  - yapf>=0.30
+  - click=8.0
+  - numpy=1.22
+  - pillow=8.3.1
+  - scipy=1.7.1
+  - ninja=1.10.2
+  - requests=2.26.0
+  - tqdm=4.62.2
+  - matplotlib=3.4.2
+  - cudatoolkit=11.1
+  - pytorch=1.9.1
+  - pip:
+      - imgui==1.3.0
+      - glfw==2.2.0
+      - pyopengl==3.1.5
+      - pyspng==0.1.0
+      - psutil==5.9.0
+      - cmake==3.22.3
+      - dlib==19.23.1
+      - opencv-python==4.5.5.64
+      - lmdb==1.3.0
+      - pygame==2.3.0
+      - pyyaml==6.0
