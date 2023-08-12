@@ -11,6 +11,52 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "align",
+            "type": "python",
+            "request": "launch",
+            "program": "align.py",
+            "args": [
+                "--predictor=models/shape_predictor_68_face_landmarks.dat",
+                "--source=in/unaligned/mirror",
+                "--neutral_img=in/unaligned/mirror/0001.png",
+                "--result=orientation.yml",
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "project",
+            "type": "python",
+            "request": "launch",
+            "program": "projector.py",
+            "args": [
+                "--target=in/datasets/uncompressed/not-my-image/img00000535.png",
+                "--outdir=out/",
+                "--name=zeno_stylegan3",
+                "--num-steps=800",
+                "--save-video",
+                "--fps=30",
+                "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
+                "--feature-ext=models/vgg16.pt"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "project batchwise",
+            "type": "python",
+            "request": "launch",
+            "program": "batch_projector.py",
+            "args": [
+                "--target_dir=in/datasets/uncompressed/not-my-image",
+                "--outdir=out/not-my-image",
+                "--name=not_my_image",
+                "--num-steps=800",
+                "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
+                // "--network=models/stylegan2-ffhq-config-f.pkl",
+                "--feature-ext=models/vgg16.pt"
+            ],
+            "console": "integratedTerminal"
         }
     ]
 }

@@ -1,4 +1,4 @@
-name: stylegan3
+name: gan-mirror
 channels:
   - pytorch
   - nvidia
