@@ -19,7 +19,7 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=source/unaligned/test",
+                "--source=source/unaligned",
                 "--dest=source/aligned",
                 "--base-image=source/unaligned/mirror_00090000.jpg",
                 "--data-dest=source/aligned/data.yml",

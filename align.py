@@ -14,6 +14,7 @@ from pathlib import Path
 import PIL.Image
 import dlib
 import imageio
+import yaml
 
 from alignement.align_face import get_landmarks, align_face
 from alignement.orientation import visualize_orientation, calculate_orientation
@@ -93,65 +94,93 @@ def run_alignment(
 
     # get reference image
     ref_landmarks = get_landmarks(base_image, predictor)
-    ref_alignements = align_face(base_image, ref_landmarks)
+    ref_alignments = align_face(base_image, ref_landmarks)
 
-    if not len(ref_alignements) and data_dest:
+    if not len(ref_alignments) and data_dest:
         error("no alignemnts for the reference image could be generated. aborting")
 
     video = None
-    if video_dest:
+    if video_dest and data_dest:
         video = imageio.get_writer(
             video_dest, mode="I", fps=fps, codec="libx264", bitrate="16M"
         )
     # align faces and save files for the number of matches
+    data = []
     try:
         for path in matches:
             landmarks = get_landmarks(path, predictor)
             alignments = align_face(path, landmarks)
             if alignments is not None:
-                if video_dest and len(alignments) >= 1:
-                    pitch, yaw, roll = calculate_orientation(
-                        alignments[0]["eye_left"],
-                        alignments[0]["eye_right"],
-                        alignments[0]["mouth_avg"],
-                        ref_alignements[0]["eye_left"],
-                        ref_alignements[0]["eye_right"],
-                        ref_alignements[0]["mouth_avg"],
+
+                def get_orientation(alignment, ref_alignment, outpath):
+                    pitch, yaw, roll, nose_direction = calculate_orientation(
+                        alignment["eye_left"],
+                        alignment["eye_right"],
+                        alignment["mouth_avg"],
+                        alignment["nose_tip"],
+                        ref_alignment["eye_left"],
+                        ref_alignment["eye_right"],
+                        ref_alignment["mouth_avg"],
+                        ref_alignment["nose_tip"],
                     )
-                    video.append_data(
-                        np.array(
-                            visualize_orientation(
-                                path,
-                                alignments[0]["eye_left"],
-                                alignments[0]["eye_right"],
-                                alignments[0]["mouth_avg"],
-                                alignments[0]["quad"],
-                                pitch,
-                                yaw,
-                                roll,
+
+                    data.append(
+                        {
+                            "path": outpath,
+                            "pitch": float(pitch),
+                            "yaw": float(yaw),
+                            "roll": float(roll),
+                            "quad": [
+                                {"x": float(point[0]), "y": float(point[1])}
+                                for point in alignment["quad"]
+                            ],
+                        }
+                    )
+
+                    with open(data_dest, "w+") as file:
+                        yaml.dump(data, file)
+
+                    if video_dest:
+                        video.append_data(
+                            np.array(
+                                visualize_orientation(
+                                    path,
+                                    alignment["eye_left"],
+                                    alignment["eye_right"],
+                                    alignment["mouth_avg"],
+                                    alignment["quad"],
+                                    alignment["lm"],
+                                    pitch,
+                                    yaw,
+                                    roll,
+                                    alignment["nose_tip"],
+                                    nose_direction,
+                                )
                             )
                         )
-                    )
+
                 if len(alignments) == 1:
-                    alignments[0]["image"].save(
-                        os.path.join(
-                            dest,
-                            os.path.basename(path).replace(
-                                file_ext(os.path.basename(path)), "png"
-                            ),
-                        )
+                    outpath = os.path.join(
+                        dest,
+                        os.path.basename(path).replace(
+                            file_ext(os.path.basename(path)), "png"
+                        ),
                     )
+                    alignments[0]["image"].save(outpath)
+                    if data_dest:
+                        get_orientation(alignments[0], ref_alignments[0], outpath)
 
                 elif len(alignments) > 1:
                     for index, alignment in enumerate(alignments):
                         name, extension = os.path.splitext(os.path.basename(path))
-                        alignment["image"].save(
-                            os.path.join(dest, f"{name}_{index:02d}.png")
-                        )
-                elif video_dest:
+                        outpath = os.path.join(dest, f"{name}_{index:02d}.png")
+                        alignment["image"].save(outpath)
+                        if data_dest:
+                            get_orientation(alignment, ref_alignments[0], outpath)
+                elif video_dest and data_dest:
                     video.append_data(np.array(PIL.Image.new("RGB", (1024, 1024))))
     finally:
-        if video_dest:
+        if video_dest and data_dest:
             video.close()
 
 

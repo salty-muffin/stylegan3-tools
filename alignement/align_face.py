@@ -183,6 +183,8 @@ def align_face(filepath, lms):
                 "eye_left": eye_left,
                 "eye_right": eye_right,
                 "mouth_avg": mouth_avg_precise,
+                "nose_tip": lm[30],
+                "lm": lm,
             }
         )
     # Save aligned images.
