@@ -1,4 +1,7 @@
+from typing import Tuple
+
 import numpy as np
+import math
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageFont
@@ -10,9 +13,9 @@ def visualize_orientation(
     eye_right: np.ndarray,
     mouth: np.ndarray,
     quad: np.ndarray,
-    pitch=0,
-    yaw=0,
-    roll=0,
+    pitch=0.0,
+    yaw=0.0,
+    roll=0.0,
 ) -> PIL.Image.Image:
     # read image
     img = PIL.Image.open(filepath)
@@ -35,3 +38,37 @@ def visualize_orientation(
     )
 
     return img.resize((1024, 1024), PIL.Image.ANTIALIAS)
+
+
+def calculate_orientation(
+    eye_left: np.ndarray,
+    eye_right: np.ndarray,
+    mouth: np.ndarray,
+    ref_eye_left: np.ndarray,
+    ref_eye_right: np.ndarray,
+    ref_mouth: np.ndarray,
+) -> Tuple[float]:
+    ref_roll_y = (
+        (ref_eye_right - ref_eye_left) / np.linalg.norm(ref_eye_right - ref_eye_left)
+    )[1]
+    ref_roll = math.acos(
+        np.clip(
+            ref_roll_y,
+            0,
+            1,
+        )
+    ) * (1 if ref_roll_y > 0 else -1)
+    roll_y = ((eye_right - eye_left) / np.linalg.norm(eye_right - eye_left))[1]
+    roll = math.acos(np.clip(roll_y, 0, 1)) * (1 if roll_y > 0 else -1) - ref_roll
+
+    ref_eye_to_eye_len = np.linalg.norm(ref_eye_right - ref_eye_left, axis=0)
+    eye_to_eye_len = np.linalg.norm(eye_right - eye_left, axis=0)
+    yaw = math.acos(np.clip(eye_to_eye_len / ref_eye_to_eye_len, 0, 1))
+
+    ref_eye_to_mouth_len = np.linalg.norm(
+        ref_mouth - np.mean((ref_eye_left, ref_eye_right), axis=0)
+    )
+    eye_to_mouth_len = np.linalg.norm(mouth - np.mean((eye_left, eye_right), axis=0))
+    pitch = math.acos(np.clip(eye_to_mouth_len / ref_eye_to_mouth_len, 0, 1))
+
+    return pitch, yaw, roll

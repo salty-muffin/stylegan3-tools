@@ -16,7 +16,7 @@ import dlib
 import imageio
 
 from alignement.align_face import get_landmarks, align_face
-from alignement.orientation import visualize_orientation
+from alignement.orientation import visualize_orientation, calculate_orientation
 
 # ----------------------------------------------------------------------------
 
@@ -91,6 +91,13 @@ def run_alignment(
     # load predictor for getting landmarks
     predictor = dlib.shape_predictor(predictor_dat)
 
+    # get reference image
+    ref_landmarks = get_landmarks(base_image, predictor)
+    ref_alignements = align_face(base_image, ref_landmarks)
+
+    if not len(ref_alignements) and data_dest:
+        error("no alignemnts for the reference image could be generated. aborting")
+
     video = None
     if video_dest:
         video = imageio.get_writer(
@@ -103,6 +110,14 @@ def run_alignment(
             alignments = align_face(path, landmarks)
             if alignments is not None:
                 if video_dest and len(alignments) >= 1:
+                    pitch, yaw, roll = calculate_orientation(
+                        alignments[0]["eye_left"],
+                        alignments[0]["eye_right"],
+                        alignments[0]["mouth_avg"],
+                        ref_alignements[0]["eye_left"],
+                        ref_alignements[0]["eye_right"],
+                        ref_alignements[0]["mouth_avg"],
+                    )
                     video.append_data(
                         np.array(
                             visualize_orientation(
@@ -111,6 +126,9 @@ def run_alignment(
                                 alignments[0]["eye_right"],
                                 alignments[0]["mouth_avg"],
                                 alignments[0]["quad"],
+                                pitch,
+                                yaw,
+                                roll,
                             )
                         )
                     )
