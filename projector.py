@@ -105,7 +105,7 @@ def project(
         ws = (w_opt + w_noise).repeat([1, G.mapping.num_ws, 1])
         synth_images = G.synthesis(ws, noise_mode="const")
 
-        # Downsample image to 256x256 if it's larger than that. VGG was built for 224x224 images.
+        # Downsample image to 256x256 if it"s larger than that. VGG was built for 224x224 images.
         synth_images = (synth_images + 1) * (255 / 2)
         if synth_images.shape[2] > 256:
             synth_images = F.interpolate(synth_images, size=(256, 256), mode="area")
@@ -153,15 +153,15 @@ def project(
 
 # fmt: off
 @click.command()
-@click.option('--network', 'network_pkl', help='Network pickle filename', required=True)
-@click.option('--feature-ext', 'feature_extractor_pkl', help='Feature extractor model pickle filename', required=True)
-@click.option('--target', 'target_fname', help='Target image file to project to', required=True, metavar='FILE')
-@click.option('--name', 'output_name',    help='Name of the ouput file')
-@click.option('--num-steps',              help='Number of optimization steps', type=int, default=1000, show_default=True)
-@click.option('--seed',                   help='Random seed', type=int, default=303, show_default=True)
-@click.option('--save-video',             help='Save an mp4 video of optimization progress', default=False, is_flag=True)
-@click.option('--outdir',                 help='Where to save the output images', required=True, metavar='DIR')
-@click.option('--fps',                    help='Frames per second of final video', default=30, show_default=True)
+@click.option("--network", "network_pkl", help="Network pickle filename", required=True)
+@click.option("--feature-ext", "feature_extractor_pkl", help="Feature extractor model pickle filename", required=True)
+@click.option("--target", "target_fname", help="Target image file to project to", required=True, metavar="FILE")
+@click.option("--name", "output_name",    help="Name of the ouput file")
+@click.option("--num-steps",              help="Number of optimization steps", type=int, default=1000, show_default=True)
+@click.option("--seed",                   help="Random seed", type=int, default=303, show_default=True)
+@click.option("--save-video",             help="Save an mp4 video of optimization progress", default=False, is_flag=True)
+@click.option("--outdir",                 help="Where to save the output images", required=True, metavar="DIR")
+@click.option("--fps",                    help="Frames per second of final video", default=30, show_default=True)
 # fmt: on
 def run_projection(
     network_pkl: str,
@@ -186,7 +186,7 @@ def run_projection(
     torch.manual_seed(seed)
 
     # Load networks.
-    print(f'Loading networks from "{network_pkl}"...')
+    print(f"Loading networks from '{network_pkl}'...")
     device = torch.device("cuda")
     with dnnlib.util.open_url(network_pkl) as fp:
         G = (
@@ -206,7 +206,7 @@ def run_projection(
     target_uint8 = np.array(target_pil, dtype=np.uint8)
 
     # Load VGG16 feature detector.
-    print(f'Loading feature detection model from "{feature_extractor_pkl}"...')
+    print(f"Loading feature detection model from '{feature_extractor_pkl}'...")
     with dnnlib.util.open_url(feature_extractor_pkl) as f:
         vgg16 = torch.jit.load(f).eval().to(device)
 
@@ -252,7 +252,7 @@ def run_projection(
         video = imageio.get_writer(
             video_path, mode="I", fps=fps, codec="libx264", bitrate="16M"
         )
-        print(f'Saving optimization progress video "{video_path}"')
+        print(f"Saving optimization progress video '{video_path}'")
         for projected_w in tqdm(projected_w_steps, total=len(projected_w_steps)):
             synth_image = G.synthesis(projected_w.unsqueeze(0), noise_mode="const")
             synth_image = (synth_image + 1) * (255 / 2)

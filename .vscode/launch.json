@@ -19,9 +19,12 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=in/unaligned/mirror",
-                "--neutral_img=in/unaligned/mirror/0001.png",
-                "--result=orientation.yml",
+                "--source=source/unaligned/test",
+                "--dest=source/aligned",
+                "--base-image=source/unaligned/mirror_00090000.jpg",
+                "--data-dest=source/aligned/data.yml",
+                "--video-dest=source/aligned/video.mp4",
+                "--fps=25"
             ],
             "console": "integratedTerminal"
         },

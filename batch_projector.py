@@ -15,13 +15,13 @@ from projector import project
 
 # fmt: off
 @click.command()
-@click.option('--network', 'network_pkl', help='Network pickle filename', required=True)
-@click.option('--feature-ext', 'feature_extractor_pkl', help='Feature extractor model pickle filename', required=True)
-@click.option('--target_dir', 'target_dirname', help='Directory with target image files to project to', required=True, metavar='DIR')
-@click.option('--name', 'output_name',    help='Name of the ouput file')
-@click.option('--num-steps',              help='Number of optimization steps', type=int, default=1000, show_default=True)
-@click.option('--seed',                   help='Random seed', type=int, default=303, show_default=True)
-@click.option('--outdir',                 help='Where to save the output images', required=True, metavar='DIR')
+@click.option("--network", "network_pkl", help="Network pickle filename", required=True)
+@click.option("--feature-ext", "feature_extractor_pkl", help="Feature extractor model pickle filename", required=True)
+@click.option("--target_dir", "target_dirname", help="Directory with target image files to project to", required=True, metavar="DIR")
+@click.option("--name", "output_name",    help="Name of the ouput file")
+@click.option("--num-steps",              help="Number of optimization steps", type=int, default=1000, show_default=True)
+@click.option("--seed",                   help="Random seed", type=int, default=303, show_default=True)
+@click.option("--outdir",                 help="Where to save the output images", required=True, metavar="DIR")
 # fmt: on
 def run_projection(
     network_pkl: str,
@@ -39,7 +39,7 @@ def run_projection(
     torch.manual_seed(seed)
 
     # Load networks.
-    print(f'Loading networks from "{network_pkl}"...')
+    print(f"Loading networks from '{network_pkl}'...")
     device = torch.device("cuda")
     with dnnlib.util.open_url(network_pkl) as fp:
         G = (
@@ -47,7 +47,7 @@ def run_projection(
         )  # type: ignore
 
     # Load VGG16 feature detector.
-    print(f'Loading feature detection model from "{feature_extractor_pkl}"...')
+    print(f"Loading feature detection model from '{feature_extractor_pkl}'...")
     with dnnlib.util.open_url(feature_extractor_pkl) as f:
         vgg16 = torch.jit.load(f).eval().to(device)
 
@@ -81,13 +81,13 @@ def run_projection(
             device=device,
             verbose=False,
         )
-        # print(f'Elapsed: {(perf_counter()-start_time):.1f} s')
+        # print(f"Elapsed: {(perf_counter()-start_time):.1f} s")
 
         filename = output_name if output_name else "proj"
         vector_filename = f"{output_name}_projected_w" if output_name else "projected_w"
 
         # Save final projected frame and W vector.
-        # target_pil.save(os.path.join(outdir, f'{target_filename}.png'))
+        # target_pil.save(os.path.join(outdir, f"{target_filename}.png"))
         projected_w = projected_w_steps[-1]
         synth_image = G.synthesis(projected_w.unsqueeze(0), noise_mode="const")
         synth_image = (synth_image + 1) * (255 / 2)
