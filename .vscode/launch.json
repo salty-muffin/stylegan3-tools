@@ -19,11 +19,11 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=source/unaligned",
-                "--dest=source/aligned",
-                "--base-image=source/unaligned/mirror_00090000.jpg",
-                "--data-dest=source/aligned/data.yml",
-                "--video-dest=source/aligned/video.mp4",
+                "--source=source/unaligned/whose_image_test_4k",
+                "--dest=source/aligned/whose_image_test_4k",
+                // "--base-image=source/unaligned/mirror_00090000.jpg",
+                "--data-dest=source/aligned/whose_image_test_4k/data.yml",
+                "--video-dest=source/aligned/whose_image_test_4k/video.mp4",
                 "--fps=25"
             ],
             "console": "integratedTerminal"
@@ -51,12 +51,12 @@
             "request": "launch",
             "program": "batch_projector.py",
             "args": [
-                "--target_dir=in/datasets/uncompressed/not-my-image",
-                "--outdir=out/not-my-image",
-                "--name=not_my_image",
-                "--num-steps=800",
-                "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
-                // "--network=models/stylegan2-ffhq-config-f.pkl",
+                "--target_dir=source/aligned/whose_image_test_1024",
+                "--outdir=out/whose_image_test_1024",
+                // "--name=not_my_image",
+                "--num-steps=600",
+                // "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
+                "--network=models/stylegan2-ffhq-config-f.pkl",
                 "--feature-ext=models/vgg16.pt"
             ],
             "console": "integratedTerminal"

@@ -83,8 +83,11 @@ def run_projection(
         )
         # print(f"Elapsed: {(perf_counter()-start_time):.1f} s")
 
-        filename = output_name if output_name else "proj"
-        vector_filename = f"{output_name}_projected_w" if output_name else "projected_w"
+        filename = (
+            output_name
+            if output_name
+            else os.path.splitext(os.path.split(target_fname)[1])[0]
+        )
 
         # Save final projected frame and W vector.
         # target_pil.save(os.path.join(outdir, f"{target_filename}.png"))
@@ -100,10 +103,10 @@ def run_projection(
         )
         index_str = str(index).zfill(len(str(len(target_fnames))))
         PIL.Image.fromarray(synth_image, "RGB").save(
-            os.path.join(outdir, f"{filename}_{index_str}.png")
+            os.path.join(outdir, f"{filename}.png")
         )
         np.savez(
-            os.path.join(outdir, "npz", f"{vector_filename}_{index_str}.npz"),
+            os.path.join(outdir, "npz", f"{filename}.npz"),
             w=projected_w.unsqueeze(0).cpu().numpy(),
         )
 

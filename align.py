@@ -126,7 +126,7 @@ def run_alignment(
 
                     data.append(
                         {
-                            "path": outpath,
+                            "path": os.path.split(outpath)[1],
                             "pitch": float(pitch),
                             "yaw": float(yaw),
                             "roll": float(roll),
