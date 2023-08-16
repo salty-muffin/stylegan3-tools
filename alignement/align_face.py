@@ -94,10 +94,14 @@ def align_face(filepath, lms):
         y = np.flipud(x) * [-1, 1]
         c = eye_avg + eye_to_mouth * 0.1
         quad = np.stack([c - x - y, c - x + y, c + x + y, c + x - y])
+        quad_out = quad.copy()
         qsize = np.hypot(*x) * 2
 
         # read image
         img = PIL.Image.open(filepath)
+        width = img.width
+
+        img_copy = img.copy()
 
         output_size = 1024
         transform_size = 4096
@@ -166,6 +170,18 @@ def align_face(filepath, lms):
             img = PIL.Image.fromarray(np.uint8(np.clip(np.rint(img), 0, 255)), "RGB")
             quad += pad[:2]
 
+        draw = PIL.ImageDraw.Draw(img_copy)
+
+        def dot(point):
+            draw.line(
+                [tuple(point + np.array((-1.5, 0))), tuple(point + np.array((1.5, 0)))],
+                "#ff0000",
+                3,
+            )
+
+        for point in quad_out:
+            dot(point)
+
         # Transform.
         img = img.transform(
             (transform_size, transform_size),
@@ -173,13 +189,14 @@ def align_face(filepath, lms):
             (quad + 0.5).flatten(),
             PIL.Image.BILINEAR,
         )
+
         if output_size < transform_size:
             img = img.resize((output_size, output_size), PIL.Image.ANTIALIAS)
 
         results.append(
             {
                 "image": img,
-                "quad": quad,
+                "quad": quad_out / width,
                 "eye_left": eye_left,
                 "eye_right": eye_right,
                 "mouth_avg": mouth_avg_precise,

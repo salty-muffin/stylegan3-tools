@@ -23,10 +23,14 @@ def visualize_orientation(
     # read image
     img = PIL.Image.open(filepath)
 
+    img = img.resize((1024, 1024), PIL.Image.ANTIALIAS)
+
     # draw lines
     draw = PIL.ImageDraw.Draw(img)
-    for index, point in enumerate(quad):
-        draw.line([tuple(point), tuple(quad[(index + 1) % len(quad)])], "#ff0000", 3)
+    for index, point in enumerate(quad * 1024):
+        draw.line(
+            [tuple(point), tuple(quad[(index + 1) % len(quad)] * 1024)], "#ff0000", 3
+        )
 
     draw.line([tuple(eye_left), tuple(eye_right)], "#ffffff", 3)
     draw.line([tuple(eye_left), tuple(mouth)], "#00ff00", 3)
@@ -49,7 +53,7 @@ def visualize_orientation(
         (10, 10), f"pitch: {pitch}°\nyaw: {yaw}°\nroll: {roll}°", "#ffffff"
     )
 
-    return img.resize((1024, 1024), PIL.Image.ANTIALIAS)
+    return img
 
 
 def calculate_orientation(

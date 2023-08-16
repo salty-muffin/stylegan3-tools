@@ -19,11 +19,11 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=source/unaligned/whose_image_test_4k",
-                "--dest=source/aligned/whose_image_test_4k",
+                "--source=source/unaligned/whose_image_test_1024",
+                "--dest=source/aligned/whose_image_test_1024",
                 // "--base-image=source/unaligned/mirror_00090000.jpg",
-                "--data-dest=source/aligned/whose_image_test_4k/data.yml",
-                "--video-dest=source/aligned/whose_image_test_4k/video.mp4",
+                "--data-dest=source/aligned/whose_image_test_1024/data.yml",
+                "--video-dest=source/aligned/whose_image_test_1024/video.mp4",
                 "--fps=25"
             ],
             "console": "integratedTerminal"
@@ -51,8 +51,8 @@
             "request": "launch",
             "program": "batch_projector.py",
             "args": [
-                "--target_dir=source/aligned/whose_image_test_1024",
-                "--outdir=out/whose_image_test_1024",
+                "--target_dir=source/aligned/whose_image_test_4k",
+                "--outdir=out/whose_image_test_4k",
                 // "--name=not_my_image",
                 "--num-steps=600",
                 // "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
