@@ -166,7 +166,7 @@ def run_alignment(
                             file_ext(os.path.basename(path)), "png"
                         ),
                     )
-                    # alignments[0]["image"].save(outpath)
+                    alignments[0]["image"].save(outpath)
                     if data_dest:
                         get_orientation(alignments[0], ref_alignments[0], outpath)
 
@@ -174,7 +174,7 @@ def run_alignment(
                     for index, alignment in enumerate(alignments):
                         name, extension = os.path.splitext(os.path.basename(path))
                         outpath = os.path.join(dest, f"{name}_{index:02d}.png")
-                        # alignment["image"].save(outpath)
+                        alignment["image"].save(outpath)
                         if data_dest:
                             get_orientation(alignment, ref_alignments[0], outpath)
                 elif video_dest and data_dest:
