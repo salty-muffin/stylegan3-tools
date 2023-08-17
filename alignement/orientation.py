@@ -32,16 +32,22 @@ def visualize_orientation(
             [tuple(point), tuple(quad[(index + 1) % len(quad)] * 1024)], "#ff0000", 3
         )
 
-    draw.line([tuple(eye_left), tuple(eye_right)], "#ffffff", 3)
-    draw.line([tuple(eye_left), tuple(mouth)], "#00ff00", 3)
-    draw.line([tuple(mouth), tuple(eye_right)], "#00ff00", 3)
+    draw.line([tuple(eye_left * 1024), tuple(eye_right * 1024)], "#ffffff", 3)
+    draw.line([tuple(eye_left * 1024), tuple(mouth * 1024)], "#00ff00", 3)
+    draw.line([tuple(mouth * 1024), tuple(eye_right * 1024)], "#00ff00", 3)
     draw.line(
-        [tuple(np.mean((eye_left, eye_right), axis=0)), tuple(mouth)], "#ffffff", 3
+        [tuple(np.mean((eye_left, eye_right), axis=0) * 1024), tuple(mouth * 1024)],
+        "#ffffff",
+        3,
     )
 
-    draw.line([tuple(nose_tip), tuple(nose_tip + nose_direction)], "#0000ff", 3)
+    draw.line(
+        [tuple(nose_tip * 1024), tuple((nose_tip + nose_direction) * 1024)],
+        "#0000ff",
+        3,
+    )
 
-    for point in lm:
+    for point in lm * 1024:
         draw.line(
             [tuple(point + np.array((-1.5, 0))), tuple(point + np.array((1.5, 0)))],
             "#0000ff",

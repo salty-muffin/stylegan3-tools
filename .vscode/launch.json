@@ -19,11 +19,11 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=source/unaligned/whose_image_test_1024",
-                "--dest=source/aligned/whose_image_test_1024",
+                "--source=source/unaligned/whose_image_test_4k",
+                "--dest=source/aligned/whose_image_test_4k",
                 // "--base-image=source/unaligned/mirror_00090000.jpg",
-                "--data-dest=source/aligned/whose_image_test_1024/data.yml",
-                "--video-dest=source/aligned/whose_image_test_1024/video.mp4",
+                "--data-dest=source/aligned/whose_image_test_4k/data.yml",
+                "--video-dest=source/aligned/whose_image_test_4k/video.mp4",
                 "--fps=25"
             ],
             "console": "integratedTerminal"
