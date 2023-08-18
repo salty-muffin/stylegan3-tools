@@ -80,7 +80,7 @@
                 "--source=out/whose_image_test_4k",
                 "--dest=out/whose_image_test_4k/reset",
                 "--data=source/aligned/whose_image_test_4k/data.yml",
-                "--size=1024x1024"
+                "--size=2160x2160"
             ],
             "console": "integratedTerminal"
         }
