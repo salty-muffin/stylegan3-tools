@@ -45,8 +45,8 @@ def is_image_ext(fname: Union[str, Path]) -> bool:
 # fmt: off
 @click.command()
 @click.option("--predictor", "predictor_dat", type=click.Path(exists=True, dir_okay=False), help="Landmark detection model filename", required=True, metavar="PATH")
-@click.option("--source",                     type=click.Path(exists=True, file_okay=False), help="Directory for input images", required=True, metavar="PATH")
-@click.option("--dest",                       type=click.Path(file_okay=False), help="Output directory for aligned images", required=True, metavar="PATH")
+@click.option("--source",                     type=click.Path(exists=True, file_okay=False), help="Directory for input images", required=True, metavar="DIR")
+@click.option("--dest",                       type=click.Path(file_okay=False), help="Output directory for aligned images", required=True, metavar="DIR")
 @click.option("--base-image", "base_image",   type=click.Path(exists=True, dir_okay=False), help="Calibration image (preferably with neutral head orientation)", required=False, metavar="PATH")
 @click.option("--data-dest", "data_dest",     type=click.Path(dir_okay=False), help=".yml file to output the angle & crop data to (if not set, then no extra data will be saved)", required=False, metavar="PATH")
 @click.option("--video-dest", "video_dest",   type=click.Path(dir_okay=False), help="output path for a video file of orientation markers (if desired)", required=False, metavar="PATH")

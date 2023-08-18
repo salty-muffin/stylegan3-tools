@@ -1,3 +1,7 @@
+"""
+Project given images from a directory to the latent space of pretrained network pickle.
+"""
+
 import os
 from tqdm import tqdm
 from glob import glob

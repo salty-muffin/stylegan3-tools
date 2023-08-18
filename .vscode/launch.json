@@ -13,6 +13,16 @@
             "justMyCode": true
         },
         {
+            "name": "verify",
+            "type": "python",
+            "request": "launch",
+            "program": "verify.py",
+            "args": [
+                "source/aligned/whose_image_test_4k"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "align",
             "type": "python",
             "request": "launch",
@@ -58,6 +68,19 @@
                 // "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
                 "--network=models/stylegan2-ffhq-config-f.pkl",
                 "--feature-ext=models/vgg16.pt"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "dequad",
+            "type": "python",
+            "request": "launch",
+            "program": "dequad.py",
+            "args": [
+                "--source=out/whose_image_test_4k",
+                "--dest=out/whose_image_test_4k/reset",
+                "--data=source/aligned/whose_image_test_4k/data.yml",
+                "--size=1024x1024"
             ],
             "console": "integratedTerminal"
         }

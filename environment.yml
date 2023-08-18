@@ -28,3 +28,4 @@ dependencies:
       - lmdb==1.3.0
       - pygame==2.3.0
       - pyyaml==6.0
+      - Wand==0.6.11
