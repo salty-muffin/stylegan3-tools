@@ -184,11 +184,6 @@ def align_face(filepath, lms):
             {
                 "image": img,
                 "quad": quad_out / width,
-                "eye_left": eye_left / width,
-                "eye_right": eye_right / width,
-                "mouth_avg": mouth_avg_precise / width,
-                "nose_tip": lm[30] / width,
-                "lm": lm / width,
             }
         )
     # Save aligned images.
