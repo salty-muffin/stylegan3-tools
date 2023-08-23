@@ -18,7 +18,7 @@
             "request": "launch",
             "program": "verify.py",
             "args": [
-                "source/aligned/whose_image_test_4k"
+                "source/aligned/whose_image"
             ],
             "console": "integratedTerminal"
         },
@@ -29,12 +29,12 @@
             "program": "align.py",
             "args": [
                 "--predictor=models/shape_predictor_68_face_landmarks.dat",
-                "--source=source/unaligned/whose_image_test_4k",
-                "--dest=source/aligned/whose_image_test_4k",
-                // "--base-image=source/unaligned/mirror_00090000.jpg",
-                "--data-dest=source/aligned/whose_image_test_4k/data.yml",
-                "--video-dest=source/aligned/whose_image_test_4k/video.mp4",
-                "--fps=25"
+                "--source=source/unaligned/mirror",
+                "--dest=source/aligned/mirror",
+                "--data-dest=source/aligned/mirror/data.yml",
+                "--video-dest=source/aligned/mirror/video.mp4",
+                "--fps=25",
+                "--landmarker=models/face_landmarker.task"
             ],
             "console": "integratedTerminal"
         },
@@ -61,8 +61,8 @@
             "request": "launch",
             "program": "batch_projector.py",
             "args": [
-                "--target_dir=source/aligned/whose_image_test_4k",
-                "--outdir=out/whose_image_test_4k",
+                "--target_dir=source/aligned/whose_image",
+                "--outdir=out/whose_image",
                 // "--name=not_my_image",
                 "--num-steps=600",
                 // "--network=models/stylegan3-t-ffhq-1024x1024.pkl",
