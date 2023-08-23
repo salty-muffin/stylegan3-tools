@@ -1,7 +1,6 @@
 from typing import Tuple, Any
 
 import numpy as np
-import math
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageFont
