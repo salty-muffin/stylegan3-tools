@@ -7,13 +7,25 @@ import click
 import yaml
 from glob import glob
 import numpy as np
-from itertools import chain
-from wand.image import Image
+import PIL.Image
 from tqdm import tqdm
 
 
 def parse_dimensions(s: str) -> tuple[int]:
     return tuple(int(dim.strip()) for dim in s.split("x"))
+
+
+def find_coeffs(pa, pb):
+    matrix = []
+    for p1, p2 in zip(pa, pb):
+        matrix.append([p1[0], p1[1], 1, 0, 0, 0, -p2[0] * p1[0], -p2[0] * p1[1]])
+        matrix.append([0, 0, 0, p1[0], p1[1], 1, -p2[1] * p1[0], -p2[1] * p1[1]])
+
+    A = np.array(matrix, dtype=float)
+    B = np.array(pb).reshape(8)
+
+    res = np.dot(np.linalg.inv(A.T @ A) @ A.T, B)
+    return np.array(res).reshape(8)
 
 
 # fmt: off
@@ -47,22 +59,20 @@ def dequad_images(source: str, dest: str, data: str, size: tuple[int]) -> None:
         filtered = list(filter(lambda x: x["path"] == os.path.basename(path), metadata))
 
         if len(filtered):
-            quad = np.array([(p["x"], p["y"]) for p in filtered[0]["quad"]])
-            quad = quad * size
+            quad = np.array([(p["x"], p["y"]) for p in filtered[0]["quad"]]) * size
 
-            with Image(filename=path) as img:
-                img.resize(*tuple(size.astype("int32")), "mitchell")
-                img.virtual_pixel = "transparent"
+            PIL.Image.open(path).convert("RGBA").resize(
+                size, PIL.Image.LANCZOS
+            ).transform(
+                tuple(size),
+                PIL.Image.PERSPECTIVE,
+                find_coeffs(quad, corners),
+                PIL.Image.BICUBIC,
+                fill=0,
+            ).save(
+                os.path.join(dest, os.path.basename(path))
+            )
 
-                order = chain.from_iterable(
-                    zip(corners, [tuple(point) for point in quad])
-                )
-                arguments = list(chain.from_iterable(order))
-                img.distort(
-                    "perspective",
-                    arguments,
-                )
-                img.save(filename=os.path.join(dest, os.path.basename(path)))
         else:
             print(f"warning: no match for '{path}' could be found in '{data}'")
 
