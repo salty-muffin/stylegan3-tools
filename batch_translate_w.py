@@ -58,10 +58,10 @@ def linear_interp(a: float, b: float, t: float) -> float:
 
 # fmt: off
 @click.command()
-@click.option('--start_ws',       type=parse_paths,                             help='the starting vector w to be translated (as an .npz file)', required=True)
-@click.option('--translation_w',  type=click.Path(exists=True, dir_okay=False), help='the vector for translation (as an .npz / .npy file)', required=True)
-@click.option('--keyframes',      type=parse_keyframes,                         help='list of keyframes to interpolate between (format: "0:0.0,5:1.0,8:0.1")', required=True)
-@click.option('--outdir',         type=click.Path(file_okay=False),             help='where to save the translated vectors (as .npz files)', required=True)
+@click.option("--start_ws",       type=parse_paths,                             help="the starting vector w to be translated (as an .npz file)", required=True)
+@click.option("--translation_w",  type=click.Path(exists=True, dir_okay=False), help="the vector for translation (as an .npz / .npy file)", required=True)
+@click.option("--keyframes",      type=parse_keyframes,                         help="list of keyframes to interpolate between (format: '0:0.0,5:1.0,8:0.1')", required=True)
+@click.option("--outdir",         type=click.Path(file_okay=False),             help="where to save the translated vectors (as .npz files)", required=True)
 # fmt: on
 def batch_translate_w(
     start_ws: str, translation_w: str, keyframes: List[tuple[int, float]], outdir: str

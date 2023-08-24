@@ -41,10 +41,10 @@ def parse_paths(s: Union[str, List]) -> List[int]:
 
 # fmt: off
 @click.command()
-@click.option('--network', 'network_pkl',  help='Network pickle filename', required=True)
-@click.option('--ws', 'projected_ws',      type=parse_paths, help='One or more projected_w filenames to generate from, or a directory containing .npz files')
-@click.option('--noise-mode',              help='Noise mode', type=click.Choice(['const', 'random', 'none']), default='const', show_default=True)
-@click.option('--outdir',                  help='Where to save the output images', type=str, required=True, metavar='DIR')
+@click.option("--network", "network_pkl",  help="Network pickle filename", required=True)
+@click.option("--ws", "projected_ws",      type=parse_paths, help="One or more projected_w filenames to generate from, or a directory containing .npz files")
+@click.option("--noise-mode",              help="Noise mode", type=click.Choice(["const", "random", "none"]), default="const", show_default=True)
+@click.option("--outdir",                  help="Where to save the output images", type=str, required=True, metavar="DIR")
 # fmt: on
 def generate_images(
     network_pkl: str,
@@ -75,9 +75,9 @@ def generate_images(
     else:
         print("cuda is not available.")
         device = torch.device("cpu")
-    print(f'device: "{device}"')
+    print(f"device: '{device}'")
 
-    print(f'Loading networks from "{network_pkl}"...')
+    print(f"Loading networks from '{network_pkl}'...")
     with dnnlib.util.open_url(network_pkl) as f:
         G = legacy.load_network_pkl(f)["G_ema"].to(device)  # type: ignore
 

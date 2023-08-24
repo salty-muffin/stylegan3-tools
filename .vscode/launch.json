@@ -79,7 +79,7 @@
             "args": [
                 "--start_ws=out/whose_image/npz",
                 "--translation_ws=models/stylegan2directions/eye_eyebrow_distance.npy,models/stylegan2directions/nose_ratio.npy,models/stylegan2directions/nose_tip.npy, models/stylegan2directions/gender.npy",
-                "--magnitude=0.0,1.0",
+                "--magnitude=-1.0,1.0",
                 "--outdir=out/whose_image_jittered/npz"
             ],
             "console": "integratedTerminal"

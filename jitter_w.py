@@ -28,10 +28,10 @@ def parse_npy_paths(s: Union[str, List]) -> List[int]:
 
 # fmt: off
 @click.command()
-@click.option('--start_ws',       type=parse_paths,                                help='the starting vector w to be translated (as an .npz file)', required=True)
-@click.option('--translation_ws', type=parse_npy_paths,                            help='the vectors for translation (as .npz / .npy files)', required=True)
-@click.option('--magnitude',      type=parse_float_comma_list, default=[0.0, 0.1], help='the factor for translation', required=True)
-@click.option('--outdir',         type=click.Path(file_okay=False),                help='where to save the translated vector(s) (as an .npz file)', required=True)
+@click.option("--start_ws",       type=parse_paths,                                 help="the starting vector w to be translated (as an .npz file)", required=True)
+@click.option("--translation_ws", type=parse_npy_paths,                             help="the vectors for translation (as .npz / .npy files)", required=True)
+@click.option("--magnitude",      type=parse_float_comma_list, default=[-1.0, 1.0], help="the factor for translation", required=True)
+@click.option("--outdir",         type=click.Path(file_okay=False),                 help="where to save the translated vector(s) (as an .npz file)", required=True)
 # fmt: on
 def jitter_w(start_ws: str, translation_ws: str, magnitude: List[float], outdir: str):
     os.makedirs(outdir, exist_ok=True)
