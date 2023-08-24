@@ -1,6 +1,6 @@
-# gan-mirror
+# stylegan3-tools
 
-mirrors people in webcam view in viewing direction and outside appearence
+some additional tools to use with stylegan3, like batch projection, reversing alignment (dequad) & translating and random offsetting of w vector
 
 ## TO DO
 

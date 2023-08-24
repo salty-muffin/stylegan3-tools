@@ -72,14 +72,77 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "jitter w",
+            "type": "python",
+            "request": "launch",
+            "program": "jitter_w.py",
+            "args": [
+                "--start_ws=out/whose_image/npz",
+                "--translation_ws=models/stylegan2directions/eye_eyebrow_distance.npy,models/stylegan2directions/nose_ratio.npy,models/stylegan2directions/nose_tip.npy, models/stylegan2directions/gender.npy",
+                "--magnitude=0.0,1.0",
+                "--outdir=out/whose_image_jittered/npz"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "translate w",
+            "type": "python",
+            "request": "launch",
+            "program": "translate_w.py",
+            "args": [
+                "--start_w=out/whose_image_jittered/npz/whose_image_00091975.npz",
+                "--translation_w=models/stylegan2directions/gender.npy",
+                "--factor=-4.0",
+                "--outfile=out/zeno_stylegan3_gender.npz"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "batch translate w",
+            "type": "python",
+            "request": "launch",
+            "program": "batch_translate_w.py",
+            "args": [
+                "--start_ws=out/whose_image_jittered/npz",
+                "--translation_w=models/stylegan2directions/gender.npy",
+                "--keyframes=1875:0.0,1975:10.0,2000:0.0",
+                "--outdir=out/whose_image_translated/npz"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "generate images",
+            "type": "python",
+            "request": "launch",
+            "program": "gen_images.py",
+            "args": [
+                "--network=models/stylegan2-ffhq-config-f.pkl",
+                "--ws=out/whose_image_jittered/npz",
+                "--outdir=out/whose_image_jittered"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "generate image",
+            "type": "python",
+            "request": "launch",
+            "program": "gen_images.py",
+            "args": [
+                "--network=models/stylegan2-ffhq-config-f.pkl",
+                "--ws=out/zeno_stylegan3_gender.npz",
+                "--outdir=out/"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "dequad",
             "type": "python",
             "request": "launch",
             "program": "dequad.py",
             "args": [
-                "--source=out/whose_image_test_4k",
-                "--dest=out/whose_image_test_4k/reset",
-                "--data=source/aligned/whose_image_test_4k/data.yml",
+                "--source=out/whose_image_translated",
+                "--dest=out/whose_image_translated/reset",
+                "--data=source/aligned/whose_image/data.yml",
                 "--size=2160x2160"
             ],
             "console": "integratedTerminal"
