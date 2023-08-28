@@ -78,9 +78,9 @@
             "program": "jitter_w.py",
             "args": [
                 "--start_ws=out/whose_image/npz",
-                "--translation_ws=models/stylegan2directions/eye_eyebrow_distance.npy,models/stylegan2directions/nose_ratio.npy,models/stylegan2directions/nose_tip.npy, models/stylegan2directions/gender.npy",
-                "--magnitude=-1.0,1.0",
-                "--outdir=out/whose_image_jittered/npz"
+                "--translation_ws=models/stylegan2directions/gender.npy,models/stylegan2directions/age.npy",
+                "--magnitude=-1.2,1.2",
+                "--outdir=out/whose_image_jittered_gen_age_1.2/npz"
             ],
             "console": "integratedTerminal"
         },
@@ -105,7 +105,7 @@
             "args": [
                 "--start_ws=out/whose_image_jittered/npz",
                 "--translation_w=models/stylegan2directions/gender.npy",
-                "--keyframes=1875:0.0,1975:10.0,2000:0.0",
+                "--keyframes=1875:0.0,1975:-4.0,2000:0.0",
                 "--outdir=out/whose_image_translated/npz"
             ],
             "console": "integratedTerminal"
@@ -117,8 +117,8 @@
             "program": "gen_images.py",
             "args": [
                 "--network=models/stylegan2-ffhq-config-f.pkl",
-                "--ws=out/whose_image_jittered/npz",
-                "--outdir=out/whose_image_jittered"
+                "--ws=out/whose_image_jittered_ran_3/npz",
+                "--outdir=out/whose_image_jittered_ran_3"
             ],
             "console": "integratedTerminal"
         },
